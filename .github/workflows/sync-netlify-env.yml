@@ -1,0 +1,17 @@
+name: Sync secrets to Netlify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  sync-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set GEMINI_API_KEY on Netlify
+        run: npx --yes netlify-cli env:set GEMINI_API_KEY "$GEMINI_API_KEY" --context production --secret
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: "6c47ed9e-9b44-4ac7-987a-a686f68fb4f5"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
